@@ -12,3 +12,5 @@
 
 # PowerShell / Azure CLI local
 .azure/
+*.swp
+.DS_Store
