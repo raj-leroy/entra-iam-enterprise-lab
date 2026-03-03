@@ -1,0 +1,14 @@
+# Secrets / auth / local artifacts
+*.env
+*.pem
+*.pfx
+*.p12
+*.key
+*.cer
+*.crt
+*.log
+*.tmp
+.DS_Store
+
+# PowerShell / Azure CLI local
+.azure/
