@@ -1,182 +1,177 @@
-# Phase 5 - Identity Governance Access Reviews
+# Phase 5 – Access Reviews (Identity Governance)
 
 ## Objective
 
-Implement Identity Governance Access Reviews in Microsoft Entra ID to validate that users maintain appropriate access to critical resources and privileged roles. This phase demonstrates how organizations periodically review access to reduce privilege creep and maintain least-privilege security posture.
+Implement Microsoft Entra Access Reviews to validate whether users should retain access to sensitive resources. Access Reviews allow organizations to periodically confirm that users still require assigned permissions and remove access that is no longer necessary.
 
-Access Reviews are a core governance control within Zero Trust architecture and help ensure that access granted through groups, roles, or applications remains justified over time.
-
----
-
-## Environment
-
-Tenant: RLSecurityConsultant.onmicrosoft.com  
-Platform: Microsoft Entra ID  
-Primary Test User: Alex Johnson  
-Reviewer: Rajiv Leroy (Global Administrator)
+This phase demonstrates governance controls used to maintain least-privilege access after permissions have already been granted.
 
 ---
 
-## Implementation Steps
+# Environment
 
-### Step 1 – Navigate to Access Reviews
+Tenant  
+RLSecurityConsultant.onmicrosoft.com
 
-In Microsoft Entra Admin Center:
+Platform  
+Microsoft Entra ID
 
-Identity Governance  
-→ Access Reviews  
-→ New Access Review
-
-This begins configuration of an automated review process for user access.
-
----
-
-### Step 2 – Configure Review Scope
-
-The access review was configured to evaluate membership within the application access group associated with the CRM access package created in Phase 4.
-
-Scope Selected:
-
-Group Membership Review
-
-Target Group:
-
+Resource Being Reviewed  
 SG-App-CRM-Users
 
-This group controls access to the CRM application environment through Entitlement Management.
-
----
-
-### Step 3 – Configure Review Settings
-
-The following review parameters were configured:
-
-Review Name  
-CRM Access Review
-
-Review Type  
-Group Membership
+Test User  
+Alex Johnson
 
 Reviewer  
 Rajiv Leroy
 
-Review Duration  
-7 Days
+---
 
-Review Frequency  
-One-time review (Lab simulation)
+# Step 1 – Configure Access Review Scope
 
-Review Decision Required  
-Yes
+An Access Review was created targeting the CRM access group.
 
-If reviewers do not respond  
-Remove access
+Resource Type  
+Teams + Groups
+
+Group Selected  
+SG-App-CRM-Users
+
+Scope  
+All Users
+
+This configuration ensures that every user who currently has CRM access is included in the review.
+
+Evidence  
+S1-access-review-scope.png
+
+---
+
+# Step 2 – Configure Reviewers
+
+The review process was configured so the group owner would perform the review.
+
+Reviewer Configuration
+
+Primary Reviewer  
+Group Owner(s)
+
+Fallback Reviewer  
+Rajiv Leroy
+
+This ensures that resource owners validate whether access remains appropriate.
+
+Evidence  
+S2-reviewer-configuration.png
+
+---
+
+# Step 3 – Configure Access Review Settings
+
+Governance settings were configured to automate enforcement of review decisions.
+
+Auto Apply Results to Resource  
+Enabled
+
+If Reviewers Do Not Respond  
+Remove Access
+
+Decision Helper  
+No Sign-in Within 30 Days
 
 Justification Required  
 Enabled
 
-These settings simulate a real enterprise governance workflow where access must be justified and validated by designated reviewers.
+Email Notifications  
+Enabled
+
+Reminders  
+Enabled
+
+These controls simulate enterprise governance policies where stale access is automatically removed if not reviewed.
+
+Evidence  
+S3-access-review-settings.png
 
 ---
 
-### Step 4 – Start Access Review
+# Step 4 – Create Access Review
 
-After configuration was completed, the review was initiated.
+The access review configuration was finalized and created.
 
-The review system automatically evaluated members of the target group and assigned the reviewer responsible for validating continued access.
+Review Name  
+CRM Users Access Review
 
-Active Review Target:
+Review Duration  
+3 Days
 
-User: Alex Johnson
+Review Type  
+One-Time Review
 
-The review was launched successfully and appeared in the Access Reviews dashboard.
+Target Resource  
+SG-App-CRM-Users
+
+After creation, the review appeared in the Access Reviews dashboard.
+
+Evidence  
+S4-access-review-created.png
 
 ---
 
-### Step 5 – Perform Review Decision
+# Step 5 – Perform Access Review Decision
 
-The reviewer navigated to the active review and evaluated the access assigned to Alex Johnson.
+The reviewer evaluated access for the test user Alex Johnson.
 
-Review Decision:
+System Recommendation  
+Deny (user inactive)
 
+Reviewer Decision  
 Approved
 
-Justification:
+Justification  
+User requires CRM access for assigned job responsibilities.
 
-User requires continued access to the CRM environment for standard operational responsibilities.
-
-The approval confirms that the user’s access remains valid and necessary.
-
----
-
-## Evidence Collected
-
-Screenshots captured during this phase:
-
-S1 – Access Review creation configuration  
-S2 – Review scope and reviewer configuration  
-S3 – Active review listing in Access Reviews dashboard  
-S4 – Review decision interface for Alex Johnson  
-S5 – Final approved review result
-
-These screenshots provide verifiable proof that governance reviews were configured and executed successfully.
+Evidence  
+S5-access-review-decision-screen.png
 
 ---
 
-## Security Concepts Demonstrated
+# Step 6 – Review Result Recorded
 
-Least Privilege
+After submitting the review decision, the outcome was recorded in the Access Review results page.
 
-Users only retain access that has been validated during periodic reviews.
+User Reviewed  
+Alex Johnson
 
-Access Governance
+Outcome  
+Approved
 
-Regular validation of user permissions prevents unnecessary privilege accumulation.
+Reviewed By  
+Rajiv Leroy
 
-Separation of Duties
-
-Review decisions require oversight from authorized reviewers rather than automated permanent approval.
-
-Zero Trust Alignment
-
-Access must be continuously verified rather than assumed permanent.
+Evidence  
+S6-access-review-approved.png
 
 ---
 
-## Operational Value
+# Security Concepts Demonstrated
 
-Access Reviews help organizations:
+Access Governance  
+Periodic validation ensures users only retain necessary permissions.
 
-Prevent privilege creep  
-Validate access after role changes  
-Detect unnecessary access assignments  
-Maintain compliance with governance policies
+Least Privilege  
+Access is continuously reviewed to prevent privilege creep.
 
-Organizations commonly use Access Reviews to audit:
+Zero Trust Security  
+Access must be verified regularly instead of assumed permanent.
 
-Privileged roles  
-Application access groups  
-External guest user access  
-Departmental resource groups
+Identity Lifecycle Management  
+User permissions are monitored throughout their lifecycle.
 
 ---
 
-## Result
+# Result
 
-The Access Review was successfully configured and executed for the CRM application access group.
+The CRM access group was successfully placed under a Microsoft Entra Access Review.
 
-Alex Johnson's membership in the CRM access group was reviewed and approved, confirming that access remains appropriate.
-
-This phase demonstrates how Microsoft Entra Identity Governance enables automated lifecycle management of user access in enterprise environments.
-
----
-
-## Next Phase
-
-Phase 6 will capture audit evidence from Microsoft Entra logs to demonstrate monitoring and traceability of identity governance activities.
-
-This includes:
-
-Audit Logs  
-Access Review Activity Logs  
-Access Package Assignment Logs
+Alex Johnson's membership was reviewed and approved, demonstrating the full governance lifecycle where access is provisioned through Entitlement Management and later validated through Access Reviews.

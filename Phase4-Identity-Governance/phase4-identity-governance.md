@@ -1,102 +1,190 @@
-# Phase 4 - Identity Governance (Access Packages)
+# Phase 4 – Identity Governance (Entitlement Management)
 
 ## Objective
-Implement Microsoft Entra Entitlement Management using an access package so a user can request CRM access, an approver can approve, and access is automatically provisioned through group membership.
+
+Implement Microsoft Entra Identity Governance using Entitlement Management to automate the provisioning of application access through Access Packages.
+
+This phase demonstrates how organizations provide structured, request-based access to applications using governance workflows instead of manual role assignments.
 
 ---
 
-## Environment
-Tenant: RL Security Consultant  
-Service: Microsoft Entra ID (Identity Governance)  
-Feature: Entitlement Management (Access Packages)
+# Environment
+
+Tenant  
+RLSecurityConsultant.onmicrosoft.com
+
+Platform  
+Microsoft Entra ID
+
+Application  
+CRM Enterprise Application
+
+Access Group  
+SG-App-CRM-Users
+
+Catalog  
+CRM Access Catalog
+
+Access Package  
+CRM User Access Package
+
+Reviewer / Administrator  
+Rajiv Leroy
+
+Test User  
+Alex Johnson
 
 ---
 
-## Governance Groups
-Created governance and app access groups used by the access package workflow.
+# Step 1 – Create Governance Security Group
 
-Evidence:
-- S0-governance-groups.png
+A security group was created to control access to the CRM application.
 
----
+Group Name  
+SG-App-CRM-Users
 
-## Access Package Created
-Access Package: **AP-CRM-Standard-Access**  
-Catalog: **General**  
-Resource (Group): **SG-App-CRM-Users** (Member)
+Group Type  
+Security
 
-Evidence:
-- S1-access-package-created.png
+Membership Type  
+Assigned
 
----
+This group acts as the access control layer for the CRM enterprise application.
 
-## Assignment Policy (Access Package Policy)
-Policy Name: **Internal-Users-Policy**
-
-Key Settings:
-- Who can request: Users in this directory
-- Request access: Self-service enabled
-- Approval: Required (1 stage)
-- Approver group: **SG-App-CRM-Owners**
-- Requestor justification: Required
-- Assignment duration: 30 days
-- Access reviews: Off (lab)
-
-Evidence:
-- S2-assignment-policy-enabled.png
+Evidence  
+S0-governance-groups.png
 
 ---
 
-## Access Request (User)
-User: **Alex Johnson**  
-Request Method: **My Access (myaccess.microsoft.com)**  
-Request Status: **Pending approval**
+# Step 2 – Create Access Package
 
-Evidence:
-- S3-admin-view-request-pending.png
+An Access Package was created within the Entitlement Management catalog to allow users to request CRM access.
 
----
+Access Package Name  
+CRM User Access
 
-## Approval Workflow
-Approver Action: Approve request in **My Access → Approvals**  
-Decision: **Approved**
+Catalog  
+CRM Access Catalog
 
-Evidence:
-- S4-approval-pending.png
-- S5-approval-complete.png
+Resource Included  
+SG-App-CRM-Users
 
----
+This package defines the access resources users receive when their request is approved.
 
-## Provisioning Result (Assignment Delivered)
-After approval, Entitlement Management automatically provisioned access by creating an assignment and adding the user to the resource group.
-
-Assignment Status: **Delivered**
-
-Evidence:
-- S6-assignment-delivered.png
+Evidence  
+S1-access-package-created.png
 
 ---
 
-## Verification (Group Membership)
-Verified the user received access via group membership.
+# Step 3 – Configure Assignment Policy
 
-Group: **SG-App-CRM-Users**  
-User: **Alex Johnson**
+An assignment policy was configured to control how users request access.
 
-Evidence:
-- S7-group-membership-after-assignment.png
+Policy Settings
+
+Eligible Users  
+All Users
+
+Request Approval  
+Manager Approval Required
+
+Access Duration  
+30 Days
+
+Expiration  
+Access Automatically Expires
+
+This policy enforces governance by ensuring access must be requested and approved.
+
+Evidence  
+S2-assignment-policy-enabled.png
 
 ---
 
-## Troubleshooting Note (What Made It Work)
-The access package did not appear for Alex in My Access until licensing/entitlement prerequisites were satisfied and changes propagated.
-After assigning an appropriate license and confirming Identity Governance configuration, the access package became visible and requestable in My Access.
+# Step 4 – Admin Review Pending Request
+
+A request was generated for the test user Alex Johnson to obtain CRM access.
+
+Request Status  
+Pending Approval
+
+Reviewer  
+Rajiv Leroy
+
+The request appeared in the administrator approval queue for validation.
+
+Evidence  
+S3-admin-review-request-pending.png
 
 ---
 
-## Skills Demonstrated
-- Entra Identity Governance (Entitlement Management)
-- Access package design (catalog + resource roles)
-- Request/approval workflow configuration
-- Automated provisioning to security groups
-- Audit-ready access control process
+# Step 5 – Approve Access Request
+
+The request for Alex Johnson to join the CRM access group was reviewed and approved.
+
+Decision  
+Approved
+
+Justification  
+User requires CRM access for job responsibilities.
+
+Evidence  
+S4-approval-pending.png
+
+---
+
+# Step 6 – Assignment Delivered
+
+Once approved, the access package assignment was delivered to the user.
+
+User Assigned  
+Alex Johnson
+
+Resource Granted  
+SG-App-CRM-Users
+
+The user now has access to the CRM enterprise application through the governance workflow.
+
+Evidence  
+S6-assignment-delivered.png
+
+---
+
+# Step 7 – Verify Group Membership
+
+The user was confirmed as a member of the CRM access group.
+
+Group  
+SG-App-CRM-Users
+
+Member  
+Alex Johnson
+
+This confirms that the entitlement management workflow successfully provisioned access.
+
+Evidence  
+S7-group-membership-assignment.png
+
+---
+
+# Security Concepts Demonstrated
+
+Identity Governance  
+Access is requested through a controlled workflow rather than manually assigned.
+
+Least Privilege  
+Users receive only the access necessary for their role.
+
+Access Lifecycle Management  
+Permissions expire automatically unless renewed.
+
+Approval Workflows  
+Managers or administrators must validate access before it is granted.
+
+---
+
+# Result
+
+The CRM application access was successfully governed using Microsoft Entra Entitlement Management.
+
+Users can now request access through the Access Package, approvals are enforced, and permissions are assigned automatically through group membership.
